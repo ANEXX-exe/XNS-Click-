@@ -1,4 +1,4 @@
-const GOOGLE_CLIENT_ID = "PUT_YOUR_CLIENT_ID_HERE";
+const GOOGLE_CLIENT_ID = "890485442762-9ch63tb0ig9lu52h30h9g6o89fgohh92.apps.googleusercontent.com";
 const CONFIG = {
     GOOGLE_BONUS: 1000,
     AUTO_SAVE_INTERVAL: 30000,
@@ -480,7 +480,7 @@ function purchaseUpgrade(upgradeKey) {
     const upgrade = gameState.upgrades[upgradeKey];
     const cost = calculateCost(upgrade);
 
-    if (gameState.coins < cost) return; // توقف فقط
+    if (gameState.coins < cost) return; 
 
     gameState.coins -= cost;
     upgrade.count++;
