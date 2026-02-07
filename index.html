@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XNS Click</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    
+    <!-- Login Screen -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-container">
+            <div class="login-header">
+                <h1 class="game-title">CYBER CLICKER</h1>
+                <div class="game-subtitle">Advanced Gaming System</div>
+            </div>
+            
+            <div class="login-box">
+                <h2 class="login-title" id="loginTitle">مرحباً بك | Welcome</h2>
+                
+                <div class="login-form">
+                    <div class="input-group">
+                        <input type="text" id="playerName" class="game-input" placeholder="أدخل اسمك | Enter your name" maxlength="20">
+                        <span class="input-icon">👤</span>
+                    </div>
+                    
+                    <button class="btn-primary" id="startGameBtn">
+                        <span class="btn-text">ابدأ اللعب | Start Game</span>
+                        <span class="btn-icon">🎮</span>
+                    </button>
+                    
+                    <div class="divider">
+                        <span>أو | OR</span>
+                    </div>
+                    
+                    <button class="btn-google" id="googleLoginBtn">
+                        <span class="google-icon">
+                            <svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+                                <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                                <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                                <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                                <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                            </svg>
+                        </span>
+                        <span class="btn-text">سجل بواسطة جوجل | Sign in with Google</span>
+                        <span class="bonus-badge">+1000 💎</span>
+                    </button>
+                </div>
+                
+                <div class="login-info">
+                    <p>💡 تلميح: سجل الدخول بجوجل واحصل على 1000 عملة مجانية!</p>
+                    <p>💡 Tip: Sign in with Google and get 1000 free coins!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Game Screen -->
+    <div class="game-screen" id="gameScreen" style="display: none;">
+        <!-- Language Toggle -->
+        <div class="language-toggle">
+            <button class="lang-btn active" data-lang="ar">العربية</button>
+            <button class="lang-btn" data-lang="en">English</button>
+        </div>
+        
+        <!-- Audio Controls -->
+        <div class="audio-controls">
+            <button class="audio-toggle" id="musicToggle" title="تشغيل/إيقاف الموسيقى">
+                🎵
+            </button>
+            <button class="audio-toggle" id="soundToggle" title="تشغيل/إيقاف المؤثرات الصوتية">
+                🔊
+            </button>
+        </div>
+        
+        <div class="container">
+            <header>
+                <h1>CYBER CLICKER</h1>
+                <div class="subtitle" data-ar="نظام المستويات المتقدم" data-en="Advanced Level System">نظام المستويات المتقدم</div>
+                <div class="player-info">
+                    <span class="player-name" id="displayPlayerName"></span>
+                    <button class="logout-btn" id="logoutBtn" data-ar="تسجيل الخروج" data-en="Logout">تسجيل الخروج</button>
+                </div>
+            </header>
+            
+            <div class="dashboard">
+                <!-- Level Progress Section -->
+                <div class="card level-section">
+                    <h2>🎯 <span data-ar="المستوى الحالي" data-en="Current Level">المستوى الحالي</span></h2>
+                    <div class="level-display">
+                        <div class="level-number" id="levelNumber">1</div>
+                        <div class="level-name" id="levelName">مبتدئ</div>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progressBar"></div>
+                        <div class="progress-text" id="progressText">0 / 100</div>
+                    </div>
+                    <div class="level-bonus">
+                        <span data-ar="مكافأة المستوى:" data-en="Level Bonus:">مكافأة المستوى:</span>
+                        <span class="bonus-value" id="levelBonus">×1</span>
+                    </div>
+                </div>
+                
+                <!-- Clicker Section -->
+                <div class="card clicker-section">
+                    <div class="coin-display">
+                        <span class="coin-icon">💎</span>
+                        <span id="coinCount">0</span>
+                    </div>
+                    <button class="click-button" id="clickButton">
+                        <span class="click-text" data-ar="اضغط" data-en="Click">اضغط</span>
+                        <div class="click-ripple"></div>
+                    </button>
+                    <div class="click-info">
+                        <div><span data-ar="قوة الضغطة:" data-en="Click Power:">قوة الضغطة:</span> <span id="clickPowerDisplay">1</span></div>
+                    </div>
+                </div>
+                
+                <!-- Statistics Section -->
+                <div class="card stats-section">
+                    <h2>⚡ <span data-ar="الإحصائيات" data-en="Statistics">الإحصائيات</span></h2>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-label" data-ar="لكل ضغطة" data-en="Per Click">لكل ضغطة</div>
+                            <div class="stat-value" id="perClick">1</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label" data-ar="لكل ثانية" data-en="Per Second">لكل ثانية</div>
+                            <div class="stat-value" id="perSecond">0</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label" data-ar="مجموع الضغطات" data-en="Total Clicks">مجموع الضغطات</div>
+                            <div class="stat-value" id="totalClicks">0</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label" data-ar="مجموع الأرباح" data-en="Total Earned">مجموع الأرباح</div>
+                            <div class="stat-value" id="totalEarned">0</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Shapes Section -->
+                <div class="card shapes-section">
+                    <h2>🎨 <span data-ar="الأشكال" data-en="Shapes">الأشكال</span></h2>
+                    <div id="shapesContainer" class="shapes-grid"></div>
+                </div>
+                
+                <!-- Pets Section -->
+                <div class="card pets-section">
+                    <h2>🐾 <span data-ar="الحيوانات الأليفة" data-en="Pets">الحيوانات الأليفة</span></h2>
+                    <div id="petsContainer" class="pets-grid"></div>
+                </div>
+                
+                <!-- Roadmap Section -->
+                <div class="card roadmap-section">
+                    <h2>🗺️ <span data-ar="مسار المستويات" data-en="Level Roadmap">مسار المستويات</span></h2>
+                    <div id="roadmapContainer" class="roadmap-grid"></div>
+                </div>
+                
+                <!-- Upgrades Section -->
+                <div class="card upgrades-section">
+                    <h2>🚀 <span data-ar="التحسينات" data-en="Upgrades">التحسينات</span></h2>
+                    <div id="upgradesContainer"></div>
+                </div>
+            </div>
+            
+            <div class="controls">
+                <button class="control-button" id="saveButton">
+                    <span data-ar="💾 حفظ التقدم" data-en="💾 Save Progress">💾 حفظ التقدم</span>
+                </button>
+                <button class="control-button" id="resetButton">
+                    <span data-ar="🔄 إعادة التعيين" data-en="🔄 Reset">🔄 إعادة التعيين</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Level Up Notification -->
+    <div class="level-up-notification" id="levelUpNotification">
+        <div class="level-up-content">
+            <div class="level-up-title">🎉 <span data-ar="تهانينا!" data-en="Congratulations!">تهانينا!</span></div>
+            <div class="level-up-text">
+                <span data-ar="وصلت إلى المستوى" data-en="You reached level">وصلت إلى المستوى</span>
+                <span id="newLevelNumber"></span>
+            </div>
+            <div class="level-up-reward">
+                <span data-ar="مكافأة:" data-en="Reward:">مكافأة:</span>
+                <span id="levelUpBonus"></span>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</body>
+</html>
