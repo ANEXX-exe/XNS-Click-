@@ -1330,3 +1330,27 @@ header h1 {
 .google-signin-container iframe {
     width: 100% !important;
 }
+
+.rebirth-btn {
+    margin-top: 15px;
+    padding: 12px;
+    width: 100%;
+    border-radius: 12px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    background: linear-gradient(45deg,#ff00cc,#3333ff);
+    color: white;
+    transition: 0.2s;
+}
+
+.rebirth-btn:hover {
+    transform: scale(1.05);
+}
+.rebirth-count {
+    margin-top: 6px;
+    text-align: center;
+    opacity: 0.8;
+    font-size: 14px;
+}
+

@@ -6,6 +6,8 @@ const CONFIG = {
 };
 
 let gameState = {
+    rebirths: 0,
+rebirthMultiplier: 1,
     coins: 0,
     totalEarned: 0,
     totalClicks: 0,
@@ -241,8 +243,16 @@ function getPetsBonus() {
 
 function calculateClickPower() {
     const multiplier = gameState.upgrades.clickMultiplier.count;
-    return gameState.clickPower * Math.pow(2, multiplier) * gameState.levelBonus * getShapeBonus() * getWorldBonus() * getPetsBonus();
+
+    return gameState.clickPower *
+        Math.pow(2, multiplier) *
+        gameState.levelBonus *
+        getShapeBonus() *
+        getWorldBonus() *
+        getPetsBonus() *
+        gameState.rebirthMultiplier;
 }
+
 
 function calculatePassiveIncome() {
     let total = 0;
@@ -750,6 +760,9 @@ function updateUI() {
     elements.clickPowerDisplay.textContent = formatNumber(calculateClickPower());
     renderUpgrades();
     updateLevelUI();
+    updateRebirthButton();
+    updateRebirthCount();
+
 }
 
 function startGame(name, isGoogle) {
@@ -889,7 +902,7 @@ function resetGame() {
 setInterval(() => {
     if (gameState.passiveIncome > 0) {
         const income = gameState.passiveIncome / 10;
-        gameState.coins += income;
+        gameState.coins += income * gameState.rebirthMultiplier;
         gameState.totalEarned += income;
         addExperience(income / 100);
         updateUI();
@@ -958,3 +971,60 @@ createParticles();
 window.onload = function() {
     setTimeout(initGoogleSignIn, 100);
 };
+ 
+function rebirth() {
+    const cost = getRebirthCost();
+
+    if (gameState.coins < cost) {
+        alert("تحتاج " + formatNumber(cost) + " عملة للـ Rebirth");
+        return;
+    }
+
+    if (!confirm("هل تريد عمل Rebirth؟")) return;
+
+    gameState.rebirths++;
+    gameState.rebirthMultiplier = 1 + gameState.rebirths * 0.5;
+
+    gameState.coins = 0;
+    gameState.totalEarned = 0;
+    gameState.totalClicks = 0;
+    gameState.clickPower = 1;
+    gameState.level = 1;
+    gameState.experience = 0;
+    gameState.levelBonus = 1;
+
+    for (let key in gameState.upgrades) {
+        gameState.upgrades[key].count = 0;
+    }
+
+    gameState.passiveIncome = calculatePassiveIncome();
+
+    saveGame();
+    updateUI();
+    updateRebirthButton();
+}
+
+
+document.getElementById("rebirthBtn")
+    .addEventListener("click", rebirth);
+
+ function getRebirthCost() {
+return 100000 * Math.pow(10, gameState.rebirths);
+}
+
+function updateRebirthButton() {
+    const btn = document.getElementById("rebirthBtn");
+    if (!btn) return;
+
+    const cost = getRebirthCost();
+    btn.textContent = `Rebirth (${formatNumber(cost)} 💎)`;
+}
+function updateRebirthCount() {
+    const el = document.getElementById("rebirthCount");
+    if (!el) return;
+
+    el.textContent = "Rebirths: " + gameState.rebirths;
+}
+
+
+
