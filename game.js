@@ -5,6 +5,7 @@ const CONFIG = {
     PASSIVE_INCOME_TICK: 500
 };
 
+
 let gameState = {
     rebirths: 0,
 rebirthMultiplier: 1,
@@ -40,6 +41,7 @@ rebirthMultiplier: 1,
 };
 
 let currentLanguage = 'ar';
+let eventMultiplier = 1;
 let audioSettings = {
     musicEnabled: true,
     soundEnabled: true
@@ -65,7 +67,7 @@ const translations = {
             realityBender: { name: 'ثاني الواقع', description: 'يشكل الواقع حسب إرادته' },
             universalCore: { name: 'نواة الكون', description: 'قلب الكون النابض' },
             infinityEngine: { name: 'محرك اللانهاية', description: 'طاقة لا محدودة من الفراغ' },
-            clickMultiplier: { name: 'مضاعف النقرات', description: 'يضاعف قوة كل نقرة ×2' }
+            clickMultiplier: { name: 'مضاعف النقرات', description: 'يزيد قوة النقر 25%' }
         },
         perSecond: '/ث', owned: 'مملوك:', level: 'مستوى:',
         resetConfirm: 'هل أنت متأكد من إعادة تعيين كل التقدم؟',
@@ -91,7 +93,7 @@ const translations = {
             realityBender: { name: 'Reality Bender', description: 'Shapes reality at will' },
             universalCore: { name: 'Universal Core', description: 'The beating heart of the universe' },
             infinityEngine: { name: 'Infinity Engine', description: 'Unlimited power from the void' },
-            clickMultiplier: { name: 'Click Multiplier', description: 'Doubles click power ×2' }
+            clickMultiplier: { name: 'Click Multiplier', description: 'Increase click power by 25%' }
         },
         perSecond: '/s', owned: 'Owned:', level: 'Level:',
         resetConfirm: 'Are you sure you want to reset all progress?',
@@ -127,7 +129,15 @@ const shapeDefinitions = {
     infinity: { emoji: '♾️', unlockLevel: 50, bonus: 7, name_ar: 'لا نهائي', name_en: 'Infinity' },
     supernova: { emoji: '💥', unlockLevel: 60, bonus: 10, name_ar: 'سوبرنوفا', name_en: 'Supernova' },
     blackhole: { emoji: '🕳️', unlockLevel: 75, bonus: 15, name_ar: 'ثقب أسود', name_en: 'Black Hole' },
-    cosmos: { emoji: '🌠', unlockLevel: 90, bonus: 25, name_ar: 'الكون', name_en: 'Cosmos' }
+    cosmos: { emoji: '🌠', unlockLevel: 90, bonus: 25, name_ar: 'الكون', name_en: 'Cosmos' },
+    coffee:     { emoji: '☕', unlockLevel: 106,  bonus: 30,    name_ar: 'قهوة',       name_en: 'Coffee' },
+    tea:        { emoji: '🍵', unlockLevel: 150,  bonus: 50,  name_ar: 'شاي',        name_en: 'Tea' },
+    bubbleTea:  { emoji: '🧋', unlockLevel: 175, bonus: 75,  name_ar: 'شاي فقاعات', name_en: 'Bubble Tea' },
+    soda:       { emoji: '🥤', unlockLevel: 200, bonus: 90,    name_ar: 'مشروب غازي', name_en: 'Soda' },
+    cocktail:   { emoji: '🍹', unlockLevel: 250, bonus: 106,    name_ar: 'كوكتيل',     name_en: 'Cocktail' },
+    beer:       { emoji: '🍺', unlockLevel: 275, bonus: 125,  name_ar: 'بيرة',       name_en: 'Beer' },
+    milkshake:  { emoji: '🥛', unlockLevel: 300, bonus: 200,  name_ar: 'ميلك شيك',   name_en: 'Milkshake' },
+    banana: { emoji: '🍌', unlockLevel: 500, bonus: 350, name_ar: 'موزة', name_en: 'Banana' }
 };
 
 const worldDefinitions = {
@@ -150,8 +160,21 @@ const worldDefinitions = {
     dimension: { emoji: '🔮', unlockLevel: 108, bonus: 25, name_ar: 'عالم الأبعاد', name_en: 'Dimension World', description_ar: 'أبعاد متعددة ومتوازية', description_en: 'Multiple parallel dimensions', gradient: 'linear-gradient(135deg, #14001a 0%, #28004d 50%, #14001a 100%)' },
     ethereal: { emoji: '👻', unlockLevel: 114, bonus: 35, name_ar: 'العالم الأثيري', name_en: 'Ethereal World', description_ar: 'عالم الأرواح والطاقة', description_en: 'World of spirits and energy', gradient: 'linear-gradient(135deg, #0a1a14 0%, #1a4d28 50%, #0a1a14 100%)' },
     celestial: { emoji: '🌟', unlockLevel: 120, bonus: 50, name_ar: 'العالم السماوي', name_en: 'Celestial World', description_ar: 'قوة الآلهة القديمة', description_en: 'Power of ancient gods', gradient: 'linear-gradient(135deg, #1a1a0a 0%, #4d4d14 50%, #1a1a0a 100%)' },
-    infinity: { emoji: '♾️', unlockLevel: 150, bonus: 100, name_ar: 'عالم اللانهاية', name_en: 'Infinity World', description_ar: 'ما وراء الفهم البشري', description_en: 'Beyond human understanding', gradient: 'linear-gradient(135deg, #1a0a1a 0%, #4d144d 50%, #1a0a1a 100%)' }
+    infinity: { emoji: '♾️', unlockLevel: 150, bonus: 100, name_ar: 'عالم اللانهاية', name_en: 'Infinity World', description_ar: 'ما وراء الفهم البشري', description_en: 'Beyond human understanding', gradient: 'linear-gradient(135deg, #220033 0%, #aa00ff 50%, #000000 100%)' },
+steam: { emoji: '🏭', unlockLevel: 126, bonus: 150, name_ar: 'عالم البخار', name_en: 'Steampunk World', description_ar: 'آلات بخارية وقرون قديمة متطورة', description_en: 'Steam machines and Victorian tech', gradient: 'linear-gradient(135deg, #3a220f 0%, #8b5a2b 50%, #3a220f 100%)' },
+candy: { emoji: '🍭', unlockLevel: 132, bonus: 170, name_ar: 'عالم الحلوى', name_en: 'Candy World', description_ar: 'كل شيء مصنوع من الحلويات والسكر', description_en: 'Everything made of sweets & sugar', gradient: 'linear-gradient(135deg, #ff66cc 0%, #ff99dd 50%, #cc3399 100%)' },
+jungle: { emoji: '🐒', unlockLevel: 138, bonus: 190, name_ar: 'عالم الغابة المطيرة', name_en: 'Jungle World', description_ar: 'نباتات عملاقة وحيوانات غامضة', description_en: 'Giant plants and mysterious creatures', gradient: 'linear-gradient(135deg, #003300 0%, #00aa44 50%, #001a00 100%)' },
+undercity: { emoji: '🕳️', unlockLevel: 144, bonus: 200, name_ar: 'المدينة السفلية', name_en: 'Undercity', description_ar: 'أنفاق وأضواء خافتة تحت الأرض', description_en: 'Tunnels and dim lights beneath the earth', gradient: 'linear-gradient(135deg, #111111 0%, #333333 50%, #111111 100%)' },
+aurora: { emoji: '🌌', unlockLevel: 150, bonus: 225, name_ar: 'عالم الشفق القطبي', name_en: 'Aurora World', description_ar: 'أضواء الشفق المتماوجة في السماء', description_en: 'Waving aurora lights in the sky', gradient: 'linear-gradient(135deg, #003366 0%, #00ffaa 50%, #001a33 100%)' },
+samurai: { emoji: '⚔️', unlockLevel: 156, bonus: 250, name_ar: 'عالم الساموراي', name_en: 'Samurai World', description_ar: 'قلاع يابانية وأرواح المحاربين', description_en: 'Japanese castles and warrior spirits', gradient: 'linear-gradient(135deg, #330000 0%, #990000 50%, #330000 100%)' },
+fairy: { emoji: '🧚', unlockLevel: 162, bonus: 275, name_ar: 'عالم الجنيات', name_en: 'Fairy World', description_ar: 'غابات مضيئة وسحر قديم', description_en: 'Glowing forests and ancient magic', gradient: 'linear-gradient(135deg, #003322 0%, #00cc88 50%, #001a11 100%)' },
+cyberpunk: { emoji: '🌆', unlockLevel: 168, bonus: 300, name_ar: 'عالم السايبربانك', name_en: 'Cyberpunk World', description_ar: 'مدن مضيئة بالنيون والمطر', description_en: 'Neon-lit rainy megacities', gradient: 'linear-gradient(135deg, #ff00cc 0%, #00ffee 50%, #14001a 100%)' },
+mirage: { emoji: '🌵', unlockLevel: 174, bonus: 325, name_ar: 'عالم السراب', name_en: 'Mirage World', description_ar: 'صحراء وهمية مليئة بالأوهام', description_en: 'Illusory desert full of mirages', gradient: 'linear-gradient(135deg, #664400 0%, #ffaa00 50%, #332200 100%)' },
+void: { emoji: '⚫', unlockLevel: 180, bonus: 350, name_ar: 'عالم الفراغ', name_en: 'Void World', description_ar: 'لا شيء وكل شيء في نفس الوقت', description_en: 'Nothing and everything at once', gradient: 'linear-gradient(135deg, #000000 0%, #222222 50%, #000000 100%)' },
+
+
 };
+
 
 const petDefinitions = {
     cat: { emoji: '🐱', unlockLevel: 8, bonus: 0.1, name_ar: 'قطة سايبر', name_en: 'Cyber Cat', description_ar: '+10% إنتاج', description_en: '+10% production' },
@@ -183,8 +206,91 @@ const petDefinitions = {
     cerberus: { emoji: '🐕', unlockLevel: 115, bonus: 5.0, name_ar: 'سيربيروس حارس الجحيم', name_en: 'Cerberus Hell Guardian', description_ar: '+500% إنتاج', description_en: '+500% production' },
     titan: { emoji: '🗿', unlockLevel: 120, bonus: 7.0, name_ar: 'تايتن قديم', name_en: 'Ancient Titan', description_ar: '+700% إنتاج', description_en: '+700% production' },
     leviathan: { emoji: '🐋', unlockLevel: 130, bonus: 10.0, name_ar: 'لوياثان العظيم', name_en: 'Great Leviathan', description_ar: '+1000% إنتاج', description_en: '+1000% production' },
-    celestial: { emoji: '⭐', unlockLevel: 150, bonus: 20.0, name_ar: 'كائن سماوي', name_en: 'Celestial Being', description_ar: '+2000% إنتاج', description_en: '+2000% production' }
+    celestial: { emoji: '⭐', unlockLevel: 150, bonus: 20.0, name_ar: 'كائن سماوي', name_en: 'Celestial Being', description_ar: '+2000% إنتاج', description_en: '+2000% production' },
+    hamster:     { emoji: '🐹', unlockLevel: 160,   bonus: 22.08, name_ar: 'هامستر كهربائي',     name_en: 'Electric Hamster',     description_ar: '+2500% إنتاج',  description_en: '+2500% production' },
+    parrot:      { emoji: '🦜', unlockLevel: 175,  bonus: 25.12, name_ar: 'ببغاء النيون',        name_en: 'Neon Parrot',          description_ar: '+3000% إنتاج', description_en: '+3000% production' },
+    turtle:      { emoji: '🐢', unlockLevel: 190,  bonus: 27.18, name_ar: 'سلحفاة الكريستال',    name_en: 'Crystal Turtle',       description_ar: '+3250% إنتاج', description_en: '+3250% production' },
+    octopus:     { emoji: '🐙', unlockLevel: 206,  bonus: 30.22, name_ar: 'أخطبوط ذكي',          name_en: 'Smart Octopus',        description_ar: '+3500% إنتاج', description_en: '+3500% production' },
+    jellyfish:   { emoji: '🪼', unlockLevel: 230,  bonus: 35.28, name_ar: 'قنديل بحر مضيء',      name_en: 'Glowing Jellyfish',    description_ar: '+3750% إنتاج', description_en: '+3750%production' },
+    flamingo:    { emoji: '🦩', unlockLevel: 260,  bonus: 37.35, name_ar: 'فلامنغو قوس قزح',     name_en: 'Rainbow Flamingo',     description_ar: '+4000% إنتاج', description_en: '+4000% production' },
+    peacock:     { emoji: '🦚', unlockLevel: 290,  bonus: 40.42, name_ar: 'طاووس متوهج',         name_en: 'Radiant Peacock',      description_ar: '+4250% إنتاج', description_en: '+4250% production' },
+    kangaroo:    { emoji: '🦘', unlockLevel: 310,  bonus: 47.50, name_ar: 'كنغر القفز الكوني',   name_en: 'Cosmic Kangaroo',      description_ar: '+4500% إنتاج', description_en: '+4500% production' },
+    sloth:       { emoji: '🦥', unlockLevel: 340,  bonus: 50.60, name_ar: 'كسلان الوقت',         name_en: 'Time Sloth',           description_ar: '+4750% إنتاج', description_en: '+4750% production' },
+    redpanda:    { emoji: '🐼', unlockLevel: 375,  bonus: 55.70, name_ar: 'باندا حمراء نادرة',   name_en: 'Rare Red Panda',       description_ar: '+5000% إنتاج', description_en: '+5000% production' },
+    axolotl:     { emoji: '🦎', unlockLevel: 406,  bonus: 60.85, name_ar: 'أكسولوتل سحري',       name_en: 'Magical Axolotl',      description_ar: '+5250% إنتاج', description_en: '+5250% production' },
+    narwhal:     { emoji: '🐳', unlockLevel: 450,  bonus: 66.0,  name_ar: 'حصان البحر أحادي',    name_en: 'Narwhal Unicorn',      description_ar: '+5500% إنتاج', description_en: '+5500% production' },
+    snowleopard: { emoji: '🐆', unlockLevel: 500,  bonus: 70.2,  name_ar: 'فهد الثلج الملكي',    name_en: 'Royal Snow Leopard',   description_ar: '+5750% إنتاج', description_en: '+5750% production' },
+    raven:       { emoji: '🐦', unlockLevel: 520,  bonus: 75.4,  name_ar: 'غراب الظلال',         name_en: 'Shadow Raven',         description_ar: '+6000% إنتاج', description_en: '+6000% production' },
+    lynx:        { emoji: '🐱', unlockLevel: 560,  bonus: 80.6,  name_ar: 'وشق الجبال',          name_en: 'Mountain Lynx',        description_ar: '+6250% إنتاج', description_en: '+6250%% production' },
+    chameleon:   { emoji: '🦎', unlockLevel: 590,  bonus: 85.8,  name_ar: 'حرباء الألوان',       name_en: 'Color Chameleon',      description_ar: '+6500% إنتاج', description_en: '+6500% production' },
+    mantis:      { emoji: '🦗', unlockLevel: 600,  bonus: 90.1,  name_ar: 'سرعوف السيوف',       name_en: 'Blade Mantis',         description_ar: '+7000% إنتاج', description_en: '+7000% production' },
+    scorpion:    { emoji: '🦂', unlockLevel: 625,  bonus: 95.5,  name_ar: 'عقرب النار',          name_en: 'Fire Scorpion',        description_ar: '+7250% إنتاج', description_en: '+7250% production' },
+    komododragon:{ emoji: '🦎', unlockLevel: 650,  bonus: 100.0,  name_ar: 'تنين كومودو',         name_en: 'Komodo Dragon',        description_ar: '+7500% إنتاج', description_en: '+7500% production' },
+    yeti:        { emoji: '🦍', unlockLevel: 675, bonus: 110.8,  name_ar: 'يتي الجليد',          name_en: 'Ice Yeti',             description_ar: '+7750% إنتاج', description_en: '+7750% production' },
+    griffin:     { emoji: '🦅', unlockLevel: 700, bonus: 120.0,  name_ar: 'غريفون السماء',       name_en: 'Sky Griffin',          description_ar: '+8000% إنتاج', description_en: '+8000% production' },
+    minotaur:    { emoji: '🐂', unlockLevel: 725, bonus: 130.0,  name_ar: 'مينوتور الأساطير',   name_en: 'Mythical Minotaur',    description_ar: '+8250% إنتاج', description_en: '+8250% production' },
+    basilisk:    { emoji: '🐍', unlockLevel: 750, bonus: 140.0,  name_ar: 'باسيليسك سام',        name_en: 'Venomous Basilisk',    description_ar: '+8500% إنتاج', description_en: '+8500% production' },
+    sphinx:      { emoji: '🦁', unlockLevel: 775, bonus: 150.0, name_ar: 'أبو الهول الحارس',    name_en: 'Guardian Sphinx',      description_ar: '+8750% إنتاج', description_en: '+8750% production' },
+    manticore:   { emoji: '🦂', unlockLevel: 800, bonus: 160.0, name_ar: 'مانتيكور الرعب',       name_en: 'Terrifying Manticore', description_ar: '+9000% إنتاج', description_en: '+9000% production' },
+    thunderbird: { emoji: '🦅', unlockLevel: 1000, bonus: 250.0, name_ar: 'طائر الرعد',          name_en: 'Thunderbird',          description_ar: '+16000% إنتاج', description_en: '+16000% production' },
 };
+
+const eventDefinitions = {
+    meteorShower: {
+        name: "Meteor Shower",
+        duration: 10 * 60 * 1000,
+        background: "linear-gradient(135deg,#2b0a0a,#ff4400,#000000)",
+        petKey: "meteorFox"
+    },
+
+    timeGlitch: {
+        name: "Time Glitch",
+        duration: 10 * 60 * 1000,
+        background: "linear-gradient(135deg,#001133,#00ffee,#000000)",
+        petKey: "timeGhost"
+    },
+
+    gravityChaos: {
+        name: "Gravity Chaos",
+        duration: 10 * 60 * 1000,
+        background: "linear-gradient(135deg,#000000,#220044,#000000)",
+        petKey: "gravityBeast"
+    }
+};
+
+const eventPets = {
+    meteorFox: {
+        emoji: "🦊",
+        bonus: 1.5,
+        autoClickBonus: 0.3,
+        name_ar: "ثعلب النيازك",
+        name_en: "Meteor Fox",
+        description_ar: "Pet حدث نادر",
+        description_en: "Rare event pet"
+    },
+
+    timeGhost: {
+        emoji: "⏳",
+        bonus: 2,
+        autoClickBonus: 0.5,
+        name_ar: "شبح الزمن",
+        name_en: "Time Ghost",
+        description_ar: "Pet حدث نادر",
+        description_en: "Rare event pet"
+    },
+
+    gravityBeast: {
+        emoji: "🪐",
+        bonus: 2.5,
+        autoClickBonus: 0.7,
+        name_ar: "وحش الجاذبية",
+        name_en: "Gravity Beast",
+        description_ar: "Pet حدث نادر",
+        description_en: "Rare event pet"
+    }
+};
+
+
 
 function formatNumber(num) {
     if (num >= 1e24) return (num / 1e24).toFixed(2) + 'Sp';
@@ -245,12 +351,14 @@ function calculateClickPower() {
     const multiplier = gameState.upgrades.clickMultiplier.count;
 
     return gameState.clickPower *
-        Math.pow(2, multiplier) *
-        gameState.levelBonus *
-        getShapeBonus() *
-        getWorldBonus() *
-        getPetsBonus() *
-        gameState.rebirthMultiplier;
+    Math.pow(1.25, multiplier) *
+    gameState.levelBonus *
+    getShapeBonus() *
+    getWorldBonus() *
+    getPetsBonus() *
+    gameState.rebirthMultiplier *
+    eventMultiplier;
+
 }
 
 
@@ -262,7 +370,17 @@ function calculatePassiveIncome() {
             total += upgrade.count * upgrade.baseIncome * gameState.levelBonus;
         }
     }
-    return total * getPetsBonus() * getWorldBonus();
+    let autoBonus = 1;
+
+gameState.pets.forEach(p => {
+    if (petDefinitions[p]?.autoClickBonus) {
+        autoBonus += petDefinitions[p].autoClickBonus;
+    }
+});
+
+return total * getPetsBonus() * getWorldBonus() * autoBonus;
+
+    
 }
 
 function updateBackgroundForWorld() {
@@ -370,6 +488,43 @@ const audioManager = {
         saveAudioSettings();
     }
 };
+let musicContext;
+let musicOscillator;
+
+let musicPlayer;
+let playlist = [
+    "music1.mp3",
+    "music2.mp3",
+    "music3.mp3"
+];
+let currentTrack = 0;
+let musicVolume = 0.3;
+
+function startGameMusic() {
+    if (!audioSettings.musicEnabled) return;
+
+    if (!musicPlayer) {
+        musicPlayer = new Audio();
+        musicPlayer.volume = musicVolume;
+
+        musicPlayer.addEventListener("ended", () => {
+            currentTrack = (currentTrack + 1) % playlist.length;
+            musicPlayer.src = playlist[currentTrack];
+            musicPlayer.play();
+        });
+    }
+
+    musicPlayer.src = playlist[currentTrack];
+    musicPlayer.play().catch(()=>{});
+}
+
+function stopGameMusic() {
+    if (musicPlayer) musicPlayer.pause();
+}
+
+
+
+
 
 
 function initGoogleSignIn() {
@@ -712,7 +867,7 @@ function renderUpgrades() {
             `;
         } else if (def.type === 'multiplier') {
             statsHTML = `
-                <span class="upgrade-stat">×2 ${currentLanguage === 'ar' ? 'قوة النقر' : 'Click Power'}</span>
+                <span class="upgrade-stat">+25% ${currentLanguage === 'ar' ? ' قوة النقر' : 'Click Power'}</span>
                 <span class="upgrade-count">${translations[currentLanguage].level} ${upgrade.count}</span>
             `;
         }
@@ -783,6 +938,7 @@ function startGame(name, isGoogle) {
     }
     
     startGameAfterLogin();
+    
 }
 
 function startGameAfterLogin() {
@@ -797,6 +953,10 @@ function startGameAfterLogin() {
     renderWorlds();
     updateUI();
     saveGame();
+    startGameMusic();
+    document.addEventListener("click", startGameMusic, { once: true });
+
+
 }
 
 function logout() {
@@ -834,6 +994,8 @@ function saveGame() {
     } catch (e) {
         console.error('Save failed:', e);
     }
+    saveToLeaderboard();
+
 }
 
 function loadGame() {
@@ -901,8 +1063,8 @@ function resetGame() {
 
 setInterval(() => {
     if (gameState.passiveIncome > 0) {
-        const income = gameState.passiveIncome / 10;
-        gameState.coins += income * gameState.rebirthMultiplier;
+        const income = gameState.passiveIncome / 2;
+        gameState.coins += income * gameState.rebirthMultiplier * eventMultiplier;
         gameState.totalEarned += income;
         addExperience(income / 100);
         updateUI();
@@ -938,6 +1100,13 @@ if (elements.resetButton) elements.resetButton.addEventListener('click', resetGa
 if (elements.musicToggle) elements.musicToggle.addEventListener('click', () => {
     audioManager.toggleMusic();
     updateAudioButtons();
+    
+
+if (audioSettings.musicEnabled)
+    startGameMusic();
+else
+    stopGameMusic();
+
 });
 if (elements.soundToggle) elements.soundToggle.addEventListener('click', () => {
     audioManager.toggleSound();
@@ -983,7 +1152,7 @@ function rebirth() {
     if (!confirm("هل تريد عمل Rebirth؟")) return;
 
     gameState.rebirths++;
-    gameState.rebirthMultiplier = 1 + gameState.rebirths * 0.5;
+    gameState.rebirthMultiplier = 1 + Math.sqrt(gameState.rebirths) * 0.6;
 
     gameState.coins = 0;
     gameState.totalEarned = 0;
@@ -1009,7 +1178,7 @@ document.getElementById("rebirthBtn")
     .addEventListener("click", rebirth);
 
  function getRebirthCost() {
-return 100000 * Math.pow(10, gameState.rebirths);
+return 100000 * Math.pow(5, gameState.rebirths);
 }
 
 function updateRebirthButton() {
@@ -1026,5 +1195,154 @@ function updateRebirthCount() {
     el.textContent = "Rebirths: " + gameState.rebirths;
 }
 
+let activeEvent = null;
+let lastEventTime = 0;
+let lastEventKey = null;
+let eventEndTime = 0;
+const EVENT_COOLDOWN = 10 * 60 * 1000; 
+function tryStartRandomEvent() {
+    if (activeEvent) return;
+
+    if (Date.now() - lastEventTime < EVENT_COOLDOWN) return;
+    if (Math.random() > 0.2) return;
+
+    const keys = Object.keys(eventDefinitions)
+        .filter(k => k !== lastEventKey);
+
+    if (keys.length === 0) return;
+
+    const randomKey = keys[Math.floor(Math.random() * keys.length)];
+    lastEventKey = randomKey;
+
+    startEvent(randomKey);
+}
 
 
+function startEvent(eventKey) {
+    const event = eventDefinitions[eventKey];
+    activeEvent = event;
+    eventMultiplier = 2;
+    
+
+    eventEndTime = Date.now() + event.duration;
+
+const banner = document.getElementById("eventBanner");
+banner.style.display = "block";
+
+audioManager.playSound(audioManager.levelUpSound);
+
+    lastEventTime = Date.now();
+
+    const overlay = document.getElementById("eventOverlay");
+overlay.style.background = event.background;
+overlay.style.opacity = 1;
+
+
+    alert("🔥 Event Started: " + event.name);
+
+    setTimeout(endEvent, event.duration);
+}
+
+function endEvent() {
+    eventMultiplier = 1;
+    if (!activeEvent) return;
+
+    const overlay = document.getElementById("eventOverlay");
+overlay.style.opacity = 0;
+updateBackgroundForWorld();
+
+const banner = document.getElementById("eventBanner");
+    banner.style.display = "none";
+    banner.textContent = "";
+    
+    if (Math.random() < 0.4) {
+        const petKey = activeEvent.petKey;
+
+        if (!gameState.pets.includes(petKey)) {
+            petDefinitions[petKey] = {
+                ...eventPets[petKey],
+                unlockLevel: 1
+            };
+
+            gameState.pets.push(petKey);
+
+            alert("🎁 حصلت على Pet حدث خاص!");
+        }
+    }
+
+    activeEvent = null;
+    renderPets();
+    updateUI();
+    
+    
+}
+
+
+setInterval(tryStartRandomEvent, 60000);
+
+
+setInterval(() => {
+    if (!activeEvent) return;
+
+    const banner = document.getElementById("eventBanner");
+    const remaining = Math.max(0, eventEndTime - Date.now());
+
+    const sec = Math.floor(remaining / 1000);
+    banner.textContent = "🔥 Event: " + activeEvent.name +
+        " | Ends in: " + sec + "s";
+}, 1000);
+
+
+
+const volUp = document.getElementById("musicVolUp");
+const volDown = document.getElementById("musicVolDown");
+
+if (volUp) {
+    volUp.onclick = () => {
+        musicVolume = Math.min(1, musicVolume + 0.1);
+        if (musicPlayer) musicPlayer.volume = musicVolume;
+        console.log("Volume Up:", musicVolume);
+    };
+}
+
+if (volDown) {
+    volDown.onclick = () => {
+        musicVolume = Math.max(0, musicVolume - 0.1);
+        if (musicPlayer) musicPlayer.volume = musicVolume;
+        console.log("Volume Down:", musicVolume);
+    };
+}
+
+
+function saveToLeaderboard() {
+    let board = JSON.parse(localStorage.getItem("leaderboard") || "[]");
+
+    board.push({
+        name: gameState.playerName,
+        coins: gameState.totalEarned
+    });
+
+    board.sort((a, b) => b.coins - a.coins);
+    board = board.slice(0, 10);
+
+    localStorage.setItem("leaderboard", JSON.stringify(board));
+}
+
+function openLeaderboard() {
+    const board = JSON.parse(localStorage.getItem("leaderboard") || "[]");
+    const list = document.getElementById("leaderboardList");
+
+    list.innerHTML = board.map((p, i) =>
+        `${i+1}. ${p.name} — ${formatNumber(p.coins)}`
+    ).join("<br>");
+
+    document.getElementById("leaderboardPanel").style.display = "block";
+}
+
+function closeLeaderboard() {
+    document.getElementById("leaderboardPanel").style.display = "none";
+}
+
+
+document.getElementById("leaderboardBtn")
+    .addEventListener("click", openLeaderboard);

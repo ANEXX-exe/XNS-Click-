@@ -62,12 +62,17 @@
         <div class="language-toggle">
             <button class="lang-btn active" data-lang="ar">العربية</button>
             <button class="lang-btn" data-lang="en">English</button>
+            <button id="leaderboardBtn">🏆 Leaderboard</button>
         </div>
+    
         
         <!-- Audio Controls -->
         <div class="audio-controls">
             <button class="audio-toggle" id="musicToggle" title="تشغيل/إيقاف الموسيقى">🎵</button>
             <button class="audio-toggle" id="soundToggle" title="تشغيل/إيقاف المؤثرات الصوتية">🔊</button>
+            <button id="musicVolUp">➕ Vol</button>
+    <button id="musicVolDown">➖ Vol</button>
+            
         </div>
         
         <div class="container">
@@ -200,8 +205,8 @@
     </div>
     <script type="module">
   // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-analytics.js";
+ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
   // TODO: Add SDKs for Firebase products that you want to use
   // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -219,8 +224,18 @@
 
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+  
 </script>
+
+<div id="eventOverlay"></div>
+<div id="eventBanner"></div>
+<div id="leaderboardPanel" style="display:none;" class="leaderboard-panel">
+    <h2>🏆 Leaderboard</h2>
+    <div id="leaderboardList"></div>
+    <button onclick="closeLeaderboard()">Close</button>
+</div>
+
+
 
     <script src="game.js"></script>
     

@@ -1,4 +1,4 @@
-# 🎮 XNS Clicker
+# 🎮 Cyber Clicker
 
 XNS Clicker is a futuristic incremental clicker game where players earn coins, unlock upgrades, level up, and collect pets and worlds to boost production.
 
