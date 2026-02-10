@@ -293,6 +293,19 @@ const eventPets = {
 
 
 function formatNumber(num) {
+    if (num >= 1e63) return (num / 1e63).toFixed(2) + 'Vg';
+    if (num >= 1e60) return (num / 1e60).toFixed(2) + 'Nod';
+    if (num >= 1e57) return (num / 1e57).toFixed(2) + 'Ocd';
+    if (num >= 1e54) return (num / 1e54).toFixed(2) + 'Spd';
+    if (num >= 1e51) return (num / 1e51).toFixed(2) + 'Sxd';
+    if (num >= 1e48) return (num / 1e48).toFixed(2) + 'Qid';
+    if (num >= 1e45) return (num / 1e45).toFixed(2) + 'Qad';
+    if (num >= 1e42) return (num / 1e42).toFixed(2) + 'Td';
+    if (num >= 1e39) return (num / 1e39).toFixed(2) + 'Dd';
+    if (num >= 1e36) return (num / 1e36).toFixed(2) + 'Ud';
+    if (num >= 1e33) return (num / 1e33).toFixed(2) + 'Dc';
+    if (num >= 1e30) return (num / 1e30).toFixed(2) + 'No';
+    if (num >= 1e27) return (num / 1e27).toFixed(2) + 'Oc';
     if (num >= 1e24) return (num / 1e24).toFixed(2) + 'Sp';
     if (num >= 1e21) return (num / 1e21).toFixed(2) + 'Sx';
     if (num >= 1e18) return (num / 1e18).toFixed(2) + 'Qi';
@@ -303,6 +316,7 @@ function formatNumber(num) {
     if (num >= 1e3) return (num / 1e3).toFixed(2) + 'K';
     return Math.floor(num).toString();
 }
+
 
 function getLevelName(level) {
     const names = translations[currentLanguage].levelNames;
