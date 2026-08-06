@@ -13,7 +13,6 @@
 <body>
     <div class="particles" id="particles"></div>
     
-    <!-- Login Screen -->
     <div class="login-screen" id="loginScreen">
         <div class="login-container">
             <div class="login-header">
@@ -39,7 +38,6 @@
                         <span>أو | OR</span>
                     </div>
                     
-                    <!-- Google Sign-In Button Container -->
                     <div id="googleLoginBtn" class="google-signin-container"></div>
                     
                     <div class="google-bonus-info">
@@ -56,23 +54,18 @@
         </div>
     </div>
     
-    <!-- Game Screen -->
     <div class="game-screen" id="gameScreen" style="display: none;">
-        <!-- Language Toggle -->
         <div class="language-toggle">
             <button class="lang-btn active" data-lang="ar">العربية</button>
             <button class="lang-btn" data-lang="en">English</button>
             <button id="leaderboardBtn">🏆 Leaderboard</button>
         </div>
     
-        
-        <!-- Audio Controls -->
         <div class="audio-controls">
             <button class="audio-toggle" id="musicToggle" title="تشغيل/إيقاف الموسيقى">🎵</button>
             <button class="audio-toggle" id="soundToggle" title="تشغيل/إيقاف المؤثرات الصوتية">🔊</button>
             <button id="musicVolUp">➕ Vol</button>
-    <button id="musicVolDown">➖ Vol</button>
-            
+            <button id="musicVolDown">➖ Vol</button>
         </div>
         
         <div class="container">
@@ -86,7 +79,6 @@
             </header>
             
             <div class="dashboard">
-                <!-- Level Progress Section -->
                 <div class="card level-section">
                     <h2>🎯 <span data-ar="المستوى الحالي" data-en="Current Level">المستوى الحالي</span></h2>
                     <div class="level-display">
@@ -103,7 +95,6 @@
                     </div>
                 </div>
                 
-                <!-- Clicker Section -->
                 <div class="card clicker-section">
                     <div class="coin-display">
                         <span class="coin-icon">💎</span>
@@ -124,7 +115,6 @@
                     </div>
                 </div>
                 
-                <!-- Statistics Section -->
                 <div class="card stats-section">
                     <h2>⚡ <span data-ar="الإحصائيات" data-en="Statistics">الإحصائيات</span></h2>
                     <div class="stats-grid">
@@ -147,31 +137,26 @@
                     </div>
                 </div>
                 
-                <!-- Worlds Section -->
                 <div class="card worlds-section">
                     <h2>🌍 <span data-ar="العوالم" data-en="Worlds">العوالم</span></h2>
                     <div id="worldsContainer" class="worlds-grid"></div>
                 </div>
                 
-                <!-- Shapes Section -->
                 <div class="card shapes-section">
                     <h2>🎨 <span data-ar="الأشكال" data-en="Shapes">الأشكال</span></h2>
                     <div id="shapesContainer" class="shapes-grid"></div>
                 </div>
                 
-                <!-- Pets Section -->
                 <div class="card pets-section">
                     <h2>🐾 <span data-ar="الحيوانات الأليفة" data-en="Pets">الحيوانات الأليفة</span></h2>
                     <div id="petsContainer" class="pets-grid"></div>
                 </div>
                 
-                <!-- Roadmap Section -->
                 <div class="card roadmap-section">
                     <h2>🗺️ <span data-ar="مسار المستويات" data-en="Level Roadmap">مسار المستويات</span></h2>
                     <div id="roadmapContainer" class="roadmap-grid"></div>
                 </div>
                 
-                <!-- Upgrades Section -->
                 <div class="card upgrades-section">
                     <h2>🚀 <span data-ar="التحسينات" data-en="Upgrades">التحسينات</span></h2>
                     <div id="upgradesContainer"></div>
@@ -189,7 +174,6 @@
         </div>
     </div>
     
-    <!-- Level Up Notification -->
     <div class="level-up-notification" id="levelUpNotification">
         <div class="level-up-content">
             <div class="level-up-title">🎉 <span data-ar="تهانينا!" data-en="Congratulations!">تهانينا!</span></div>
@@ -204,40 +188,30 @@
         </div>
     </div>
     <script type="module">
-  // Import the functions you need from the SDKs you need
- import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+      import { getFirestore } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
 
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyAYAfJIIe6lTA_qWxB0sNUXfbw_vodbHBU",
-    authDomain: "xns-click-e94e4.firebaseapp.com",
-    projectId: "xns-click-e94e4",
-    storageBucket: "xns-click-e94e4.firebasestorage.app",
-    messagingSenderId: "1071358614675",
-    appId: "1:1071358614675:web:782d26773f3ea9ca3f4166",
-    measurementId: "G-FKTYEPXTWX"
-  };
+      const firebaseConfig = {
+        apiKey: "AIzaSyAYAfJIIe6lTA_qWxB0sNUXfbw_vodbHBU",
+        authDomain: "xns-click-e94e4.firebaseapp.com",
+        projectId: "xns-click-e94e4",
+        storageBucket: "xns-click-e94e4.firebasestorage.app",
+        messagingSenderId: "1071358614675",
+        appId: "1:1071358614675:web:782d26773f3ea9ca3f4166",
+        measurementId: "G-FKTYEPXTWX"
+      };
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  
-</script>
+      const app = initializeApp(firebaseConfig);
+    </script>
 
-<div id="eventOverlay"></div>
-<div id="eventBanner"></div>
-<div id="leaderboardPanel" style="display:none;" class="leaderboard-panel">
-    <h2>🏆 Leaderboard</h2>
-    <div id="leaderboardList"></div>
-    <button onclick="closeLeaderboard()">Close</button>
-</div>
-
-
+    <div id="eventOverlay"></div>
+    <div id="eventBanner"></div>
+    <div id="leaderboardPanel" style="display:none;" class="leaderboard-panel">
+        <h2>🏆 Leaderboard</h2>
+        <div id="leaderboardList"></div>
+        <button onclick="closeLeaderboard()">Close</button>
+    </div>
 
     <script src="game.js"></script>
-    
 </body>
 </html>
